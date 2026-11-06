@@ -1,0 +1,23 @@
+# Settings for the dev environment.
+# Change this file in a PR, merge it, then run the workflow with environment = dev.
+
+# dev keeps the original "pg-lab" names, so the existing servers are not recreated
+name: pg-lab
+
+region: us-east-1    # pg1 and pg2
+dr_region: us-west-2 # pg3
+
+instance_type: t3.micro
+
+pg1:
+  volume_size: 20
+
+pg2:
+  az: us-east-1b
+  volume_size: 20
+  data_volume_size: 0 # 0 = no data disk
+
+pg3:
+  az: us-west-2a
+  volume_size: 20
+  data_volume_size: 0

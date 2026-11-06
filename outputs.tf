@@ -8,5 +8,5 @@ output "private_ip" {
 
 output "connect_command" {
   description = "Run this if you have the Session Manager plugin installed"
-  value       = "aws ssm start-session --target ${aws_instance.pg.id} --region ${var.region}"
+  value       = "aws ssm start-session --target ${aws_instance.pg.id} --region ${local.config.region}"
 }

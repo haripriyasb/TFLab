@@ -29,14 +29,6 @@ variable "volume_size" {
   description = "Root disk size in GB"
 }
 
-
-
-variable "pg3_data_volume_size" {
-  type    = number
-  default = 0
-}
-
-
 variable "data_volume_size" {
   type        = number
   description = "Data disk size in GB. 0 means no data disk."
