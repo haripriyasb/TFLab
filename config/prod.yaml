@@ -1,0 +1,24 @@
+# Settings for the prod environment.
+# Change this file in a PR, merge it, then run the workflow with environment = prod.
+
+# A different name prefix keeps prod's IAM role, security groups
+# and instances separate from dev's in the same AWS account
+name: pg-lab-prod
+
+region: us-east-1    # pg1 and pg2
+dr_region: us-west-2 # pg3
+
+instance_type: t3.micro
+
+pg1:
+  volume_size: 20
+
+pg2:
+  az: us-east-1c
+  volume_size: 20
+  data_volume_size: 0 # 0 = no data disk
+
+pg3:
+  az: us-west-2b
+  volume_size: 20
+  data_volume_size: 0

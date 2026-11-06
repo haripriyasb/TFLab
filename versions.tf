@@ -1,9 +1,10 @@
 terraform {
-  required_version = ">= 1.6"
+  required_version = ">= 1.10"
 
+  # Shared backend settings. The state key is not here: it comes from
+  # backends/<environment>.s3.tfbackend when you run terraform init.
   backend "s3" {
     bucket       = "pg-lab-tfstate-325190458492"
-    key          = "pg-lab/terraform.tfstate"
     region       = "us-east-1"
     encrypt      = true
     use_lockfile = true
@@ -15,12 +16,10 @@ terraform {
       version = "~> 6.0"
     }
   }
-
-  # State is local for now. Later step: move it to an S3 backend.
 }
 
 provider "aws" {
-  region = var.region
+  region = local.config.region
 
   default_tags {
     tags = {
@@ -30,10 +29,9 @@ provider "aws" {
   }
 }
 
-
 provider "aws" {
   alias  = "west"
-  region = var.dr_region
+  region = local.config.dr_region
 
   default_tags {
     tags = {

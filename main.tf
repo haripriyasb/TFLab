@@ -19,14 +19,14 @@ data "aws_vpc" "default" {
 # The default subnet in the "a" availability zone
 data "aws_subnet" "default" {
   vpc_id            = data.aws_vpc.default.id
-  availability_zone = "${var.region}a"
+  availability_zone = "${local.config.region}a"
   default_for_az    = true
 }
 
 # --- IAM role so you can connect with SSM Session Manager (no SSH keys) ---
 
 resource "aws_iam_role" "ec2_ssm" {
-  name = "${var.name}-ec2-ssm"
+  name = "${local.config.name}-ec2-ssm"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -44,7 +44,7 @@ resource "aws_iam_role_policy_attachment" "ssm_core" {
 }
 
 resource "aws_iam_instance_profile" "ec2_ssm" {
-  name = "${var.name}-ec2-ssm"
+  name = "${local.config.name}-ec2-ssm"
   role = aws_iam_role.ec2_ssm.name
 }
 
@@ -52,7 +52,7 @@ resource "aws_iam_instance_profile" "ec2_ssm" {
 # SSM works over outbound HTTPS, so nothing needs to be opened inbound.
 
 resource "aws_security_group" "pg" {
-  name        = "${var.name}-pg"
+  name        = "${local.config.name}-pg"
   description = "Postgres lab instance"
   vpc_id      = data.aws_vpc.default.id
 
@@ -65,7 +65,7 @@ resource "aws_security_group" "pg" {
   }
 
   tags = {
-    Name = "${var.name}-pg"
+    Name = "${local.config.name}-pg"
   }
 }
 
@@ -73,7 +73,7 @@ resource "aws_security_group" "pg" {
 
 resource "aws_instance" "pg" {
   ami                    = data.aws_ami.ubuntu.id
-  instance_type          = var.instance_type
+  instance_type          = local.config.instance_type
   subnet_id              = data.aws_subnet.default.id
   vpc_security_group_ids = [aws_security_group.pg.id]
   iam_instance_profile   = aws_iam_instance_profile.ec2_ssm.name
@@ -84,7 +84,7 @@ resource "aws_instance" "pg" {
 
   root_block_device {
     volume_type = "gp3"
-    volume_size = 20
+    volume_size = local.config.pg1.volume_size
     encrypted   = true
   }
 
@@ -94,7 +94,7 @@ resource "aws_instance" "pg" {
   }
 
   tags = {
-    Name  = "${var.name}-pg1"
+    Name  = "${local.config.name}-pg1"
     Owner = "harip"
   }
 }
@@ -102,12 +102,13 @@ resource "aws_instance" "pg" {
 module "pg2" {
   source = "./modules/pg-node"
 
-  name                 = "${var.name}-pg2"
-  instance_type        = var.instance_type
-  availability_zone    = var.pg2_az
+  name                 = "${local.config.name}-pg2"
+  instance_type        = local.config.instance_type
+  availability_zone    = local.config.pg2.az
   iam_instance_profile = aws_iam_instance_profile.ec2_ssm.name
   user_data            = file("${path.module}/user_data.sh")
-  volume_size          = var.pg2_volume_size
+  volume_size          = local.config.pg2.volume_size
+  data_volume_size     = local.config.pg2.data_volume_size
 }
 
 module "pg3" {
@@ -117,11 +118,11 @@ module "pg3" {
     aws = aws.west
   }
 
-  name                 = "${var.name}-pg3"
-  instance_type        = var.instance_type
-  availability_zone    = var.pg3_az
+  name                 = "${local.config.name}-pg3"
+  instance_type        = local.config.instance_type
+  availability_zone    = local.config.pg3.az
   iam_instance_profile = aws_iam_instance_profile.ec2_ssm.name
   user_data            = file("${path.module}/user_data.sh")
-  volume_size          = var.pg3_volume_size
-
+  volume_size          = local.config.pg3.volume_size
+  data_volume_size     = local.config.pg3.data_volume_size
 }
