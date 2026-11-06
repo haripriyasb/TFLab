@@ -93,7 +93,7 @@ resource "aws_instance" "pg" {
     http_tokens = "required"
   }
 
-    tags = {
+  tags = {
     Name  = "${var.name}-pg1"
     Owner = "harip"
   }
@@ -107,7 +107,7 @@ module "pg2" {
   availability_zone    = var.pg2_az
   iam_instance_profile = aws_iam_instance_profile.ec2_ssm.name
   user_data            = file("${path.module}/user_data.sh")
-  volume_size = var.pg2_volume_size
+  volume_size          = var.pg2_volume_size
 }
 
 module "pg3" {
@@ -122,5 +122,5 @@ module "pg3" {
   availability_zone    = var.pg3_az
   iam_instance_profile = aws_iam_instance_profile.ec2_ssm.name
   user_data            = file("${path.module}/user_data.sh")
-  volume_size = var.pg3_volume_size
+  volume_size          = var.pg3_volume_size
 }

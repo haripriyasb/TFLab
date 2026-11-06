@@ -1,7 +1,7 @@
 terraform {
   required_version = ">= 1.6"
 
-    backend "s3" {
+  backend "s3" {
     bucket       = "pg-lab-tfstate-325190458492"
     key          = "pg-lab/terraform.tfstate"
     region       = "us-east-1"

@@ -33,11 +33,11 @@ variable "pg3_az" {
 }
 
 variable "pg2_volume_size" {
-  type    = number
-  
+  type = number
+
 }
 
 variable "pg3_volume_size" {
-  type    = number
-  
+  type = number
+
 }
