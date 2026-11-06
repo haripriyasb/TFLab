@@ -123,5 +123,5 @@ module "pg3" {
   iam_instance_profile = aws_iam_instance_profile.ec2_ssm.name
   user_data            = file("${path.module}/user_data.sh")
   volume_size          = var.pg3_volume_size
-  data_volume_size     = var.pg3_data_volume_size
+
 }
