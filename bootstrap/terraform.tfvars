@@ -1,3 +1,5 @@
-region       = "us-east-1"
-github_owner = "haripriyasb"
-github_repo  = "TFLab"
+region          = "us-east-1"
+github_owner    = "haripriyasb"
+github_repo     = "TFLab"
+github_owner_id = "163021456"
+github_repo_id  = "1448140849"
