@@ -65,6 +65,8 @@ resource "aws_instance" "this" {
 
 
 resource "aws_ebs_volume" "data" {
+  count = var.data_volume_size > 0 ? 1 : 0
+
   availability_zone = aws_instance.this.availability_zone
   size              = var.data_volume_size
   type              = "gp3"
@@ -76,7 +78,9 @@ resource "aws_ebs_volume" "data" {
 }
 
 resource "aws_volume_attachment" "data" {
+  count = var.data_volume_size > 0 ? 1 : 0
+
   device_name = "/dev/sdf"
-  volume_id   = aws_ebs_volume.data.id
+  volume_id   = aws_ebs_volume.data[0].id
   instance_id = aws_instance.this.id
 }
