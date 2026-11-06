@@ -76,8 +76,12 @@ resource "aws_iam_role" "plan" {
       Condition = {
         StringEquals = {
           "token.actions.githubusercontent.com:aud" = "sts.amazonaws.com"
-          # Only pull requests in your repo can use this role
-          "token.actions.githubusercontent.com:sub" = "repo:${local.repo}:pull_request"
+          # Pull requests, or manual runs on main, in your repo only.
+          # A list here means "any of these".
+          "token.actions.githubusercontent.com:sub" = [
+            "repo:${local.repo}:pull_request",
+            "repo:${local.repo}:ref:refs/heads/main",
+          ]
         }
       }
     }]
