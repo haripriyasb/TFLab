@@ -6,3 +6,4 @@ dr_region       = "us-west-2"
 pg3_az          = "us-west-2a"
 pg2_volume_size = 20
 pg3_volume_size = 20
+pg3_data_volume_size = 10

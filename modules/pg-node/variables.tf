@@ -28,3 +28,10 @@ variable "volume_size" {
   type        = number
   description = "Root disk size in GB"
 }
+
+
+
+variable "pg3_data_volume_size" {
+  type    = number
+  default = 0
+}
