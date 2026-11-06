@@ -1,0 +1,6 @@
+# Normalise line endings in the repo
+* text=auto
+
+# Shell scripts must stay LF, or Linux can't run them and the
+# user_data content changes (which would replace the instances)
+*.sh text eol=lf
